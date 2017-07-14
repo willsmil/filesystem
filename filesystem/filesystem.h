@@ -78,6 +78,7 @@ extern int open(char filename[10]);				//打开文件
 extern void copy(char filename[10]);				//复制文件
 extern void paste(char filename[10]);			//粘贴文件
 extern int read(char filename[10]);				//读取文件内容
+extern void show_file_content();				//显示文件内容
 extern void show_file(char filename[]);			//显示文件信息
 extern void help();								//命令帮助
 extern void display_sys();						//显示系统信息（磁盘使用情况）

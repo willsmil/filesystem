@@ -176,9 +176,7 @@ int read(char filename[10]){
 					if (i_node[root[i].i_num].limit == "o+r+w" || i_node[root[i].i_num].limit == "o+r")
 					{
 						int c, add;
-						printf("\n  文件内容：");
 						for (add = 0; add < 100; add++) {
-							cout << memory[i_node[root[i].i_num].file_address[add]].content;
 							temp_write= memory[i_node[root[i].i_num].file_address[add]].content;
 							if (temp_write.length() != 0)
 								break;
@@ -205,7 +203,10 @@ int read(char filename[10]){
 	}
 	return 0;
 }
-
+void show_file_content() {
+	cout << "文件内容为：";
+	cout << temp_write << endl;
+}
 /*写入文件*/
 void write(char filename[10], string writec){
 	int i;
@@ -295,6 +296,9 @@ void show_file(char filename[]){
 /*复制文件*/
 void copy(char filename[10]) {
 	int i;
+	open(filename);
+	read(filename);
+	close(filename);
 	for ( i= 0; i < 640; i++) {
 		if (strcmp(root[i].file_name, filename) == 0 && i_node[root[i].i_num].file_style == 1)
 			temp_file = i_node[root[i].i_num];

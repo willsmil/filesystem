@@ -196,6 +196,7 @@ void main(){
 		case 13: {
 			scanf("%s", tmp);
 			read(tmp);
+			show_file_content();
 			break;
 		}
 		case 14: {
