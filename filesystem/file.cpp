@@ -1,16 +1,17 @@
 #include "filesystem.h"
 
-int style = 1;
-int file_array_head;
-int physic[100];
-string cur_user;
-int file_array[8] = { -1,-1,-1,-1,-1,-1,-1,-1 };
+int style = 1;			//文件的类型
+int file_array_head;	//文件表组头
+int physic[100];		//文件地址缓冲区
+string cur_user;		//当前用户
+int file_array[8] = { -1,-1,-1,-1,-1,-1,-1,-1 };  //打开文件表组
 
 /*创建文件*/
-void create_file(char filename[], int length, int userid, int limit){
+void create_file(char filename[], int length, int userid, string limit){
 	int i, j;
 	for (i = 0; i<640; i++)
 	{
+		//判断重名
 		if (strcmp(filename, root[i].file_name) == 0)
 		{
 			printf("已经存在同名文件，不允许建立重名的文件\n");
@@ -19,6 +20,7 @@ void create_file(char filename[], int length, int userid, int limit){
 	}
 	for (i = 0; i<640; i++)
 	{
+		//找到空闲块
 		if (root[i].i_num == -1)
 		{
 			root[i].i_num = i;
@@ -27,7 +29,7 @@ void create_file(char filename[], int length, int userid, int limit){
 			i_node[i].file_style = style;//style==0 说明文件是目录文件
 			i_node[i].file_length = length;
 			i_node[i].limit = limit;
-			i_node[i].file_UserId = userid; //printf("%s.%d\n",root[i].file_name,i_node[i].file_UserId);
+			i_node[i].file_UserId = userid; 
 			allot(length);
 			for (j = 0; j<length; j++)
 			{
@@ -35,7 +37,6 @@ void create_file(char filename[], int length, int userid, int limit){
 			}
 
 			//初始化文件
-
 			for (int add = 0; add < 100; add++)
 				for (int c = 0; c < length; c++) {
 					memory[i_node[root[i].i_num].file_address[add]].content[c] = '\0';
@@ -57,7 +58,7 @@ void del_file(char filename[])     {
 	{
 
 		if ((strcmp(filename, root[i].file_name) == 0) && (strcmp(cur_dir, root[i].dir_name) == 0) && (i_node[root[i].i_num].file_UserId == login_userid))
-		{//printf("1get here\n");
+		{
 			int add, c;
 			for (add = 0; add<i_node[root[i].i_num].file_length; add++)//文件内容清空
 			{
@@ -66,13 +67,13 @@ void del_file(char filename[])     {
 					memory[i_node[root[i].i_num].file_address[add]].content[c] = '\0';
 				}
 			}
-			k = root[i].i_num; //printf("2get here\n");
+			k = root[i].i_num; 
 			i_node[k].file_UserId = -1;
-			i_node[k].limit = -1;
+			i_node[k].limit = "";
 			for (j = 0; j<i_node[k].file_length; j++)
 			{
 				physic[j] = i_node[k].file_address[j];
-			}// printf("get here\n");
+			}
 			callback(i_node[k].file_length); //调用 回收函数
 			int u;//回收完情空缓存区
 			for (u = 0; u<100; u++)
@@ -84,10 +85,10 @@ void del_file(char filename[])     {
 				i_node[k].file_address[j] = -1; //文件占用的块号地址恢复初值
 			}
 			strcpy(root[i].file_name, "");  //文件名恢复初值
-			root[i].i_num = -1;     //目录项的I结点信息恢复初值
-			strcpy(root[i].dir_name, "");  //目录项的文件目录信息恢复初值
-			i_node[k].file_length = -1;   //文件长度恢复
-			i_node[k].file_style = -1;   //文件类型恢复初值
+			root[i].i_num = -1;				//目录项的I结点信息恢复初值
+			strcpy(root[i].dir_name, "");	//目录项的文件目录信息恢复初值
+			i_node[k].file_length = -1;		//文件长度恢复
+			i_node[k].file_style = -1;		//文件类型恢复初值
 			break;
 		}
 	}
@@ -158,7 +159,7 @@ void close(char filename[10]){
 	return;
 }
 
-/*读文件*/
+/*读取文件*/
 int read(char filename[10]){
 	int i;
 	for (i = 0; i<640; i++)
@@ -167,18 +168,16 @@ int read(char filename[10]){
 		{
 			int j;
 			for (j = 0; j<8; j++)
-			{          //int n; for (n=0;n<8;n++) printf("%d\n",file_array[n]);
+			{          
 				if (root[i].i_num == file_array[j])
 				{
-					if (i_node[root[i].i_num].limit == 0 || i_node[root[i].i_num].limit == 1)
+					if (i_node[root[i].i_num].limit == "o+r+w" || i_node[root[i].i_num].limit == "o+r")
 					{
 						int c, add;
 						printf("\n  文件内容：");
 						for (add = 0; add < 100; add++) {
 							cout << memory[i_node[root[i].i_num].file_address[add]].content;
 						}
-						//for (c = 0; memory[i_node[root[i].i_num].file_address[add]].content[c] != '\0'; c++)
-						//	printf("%c", memory[i_node[root[i].i_num].file_address[add]].content[c]);
 						printf("\n ");
 					}
 					else
@@ -209,12 +208,12 @@ void write(char filename[10], string writec){
 	{
 		if (strcmp(root[i].file_name, filename) == 0 && i_node[root[i].i_num].file_style == 1)
 		{
-			int j;  //for(j=0;j<8;j++) printf("%d",file_array[j]);
+			int j; 
 			for (j = 0; j<8; j++)
 			{
 				if (root[i].i_num == file_array[j])
 				{
-					if (i_node[root[i].i_num].limit == 0 || i_node[root[i].i_num].limit == 2)
+					if (i_node[root[i].i_num].limit == "o+r+w" || i_node[root[i].i_num].limit == "o+w")
 					{
 						int c, add, write_length;
 						for (add = 0; add<100; add++)
@@ -269,11 +268,11 @@ void show_file(char filename[]){
 		k = root[i].i_num;
 		if (strcmp(filename, root[i].file_name) == 0 && (i_node[k].file_style == 1))
 		{
-			printf("\t\t  %s\t", root[i].file_name);   //文件名
-			printf("\t%d\t", i_node[k].file_style);   //文件的类型
-			printf("%d\t", i_node[k].file_length);   //文件的长度
-			printf("%d\t", i_node[k].limit);
-			printf("%s\t", root[i].dir_name);    //文件所在的目录
+			printf("\t\t  %s\t", root[i].file_name);	//文件名
+			printf("\t%d\t", i_node[k].file_style);		//文件的类型
+			printf("%d\t", i_node[k].file_length);		//文件的长度
+			cout << i_node[k].limit << "\t";
+			printf("%s\t", root[i].dir_name);			//文件所在的目录
 			cout << cur_user << endl;
 			printf("\t\t文件占用的物理地址\n");
 			for (j = 0; j<i_node[k].file_length; j++)   //显示物理地址

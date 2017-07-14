@@ -16,10 +16,10 @@ struct command{
 //盘块信息（1KB/块）
 struct block
 {
-	int n;      //存放空闲盘块的个数
-	int free[50];    //存放空闲盘块的地址
-	int a;      //盘块是否被占用标志
-	char content[1000];//块上每个字节存放的符号
+	int n;				//存放空闲盘块的个数
+	int free[50];		//存放空闲盘块的地址
+	int a;				//盘块是否被占用标志
+	char content[1000];	//块上每个字节存放的符号
 };
 
 //超级块
@@ -33,7 +33,7 @@ struct node{
 	int file_style;    //i结点 文件类型
 	int file_length;   //i结点 文件长度
 	int file_address[100];  //文件占用的物理块号。
-	int limit;//打开读写权限，0表示能打开读写，1表示能打开读，2表示能打开写，3表示只能打开
+	string limit;//打开读写权限，0表示能打开读写，1表示能打开读，2表示能打开写，3表示只能打开
 	int file_UserId;
 } ;
 
@@ -52,12 +52,12 @@ struct dir      {
 
 extern int user_num;				//已注册用户数量
 extern int login_userid;			//当前登录的用户ID
-extern string cur_user;					//当前用户
-extern int file_array[8];	// 打开文件表组
-extern int file_array_head;				//文件表组头
-extern int physic[100];					//文件地址缓冲区
+extern string cur_user;				//当前用户
+extern int file_array[8];			// 打开文件表组
+extern int file_array_head;			//文件表组头
+extern int physic[100];				//文件地址缓冲区
 extern int style;					//文件的类型
-extern char cur_dir[10];	//当前目录
+extern char cur_dir[10];			//当前目录
 
 extern command cmd[17];
 extern block memory[20449];
@@ -73,12 +73,10 @@ extern void create_dir(char filename[]);		//创建目录
 extern void display_curdir();					//显示当前目录下的文件列表
 extern void display_dir(char filename[]);		//进入指定的目录
 extern void close(char filename[10]);			//关闭文件
-extern void create_file(char filename[], int length, int userid, int limit); //创建文件
 extern void del_file(char filename[]);			//删除文件
 extern int open(char filename[10]);				//打开文件
 extern int read(char filename[10]);				//读取文件内容
 extern void show_file(char filename[]);			//显示文件信息
-extern void write(char filename[10], string writec);//写入文件
 extern void help();								//命令帮助
 extern void display_sys();						//显示系统信息（磁盘使用情况）
 extern void read_file(FILE *fp);				//读出系统文件的信息
@@ -89,3 +87,5 @@ extern void reg();								//注册
 extern void format();							//初始化
 extern void allot(int length);					//分配空间
 extern void callback(int length);				//回收空间
+extern void write(char filename[10], string writec);//写入文件
+extern void create_file(char filename[], int length, int userid, string limit); //创建文件

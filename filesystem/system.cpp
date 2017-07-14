@@ -1,7 +1,7 @@
 #include "filesystem.h"
 
-block_super super_block;
-block memory[20449];
+block_super super_block;		//超级块
+block memory[20449];			//盘块
 
 /*将信息写入系统文件*/
 void write_file(FILE *fp)    {
@@ -57,7 +57,7 @@ void read_file(FILE *fp)   {
 }
 
 /*显示系统信息（磁盘使用情况）*/
-void display_sys()        {
+void display_sys(){
 	int i, m, k = 0;
 	for (i = 0; i<20449; i++)
 	{
@@ -166,10 +166,10 @@ void allot(int length)     {
 	int i, j, k, m, p;
 	for (i = 0; i<length; i++)
 	{
-		k = 50 - super_block.n;    //超级块中表示空闲块的指针
-		m = super_block.free[k];   //栈中的相应盘块的地址
+		k = 50 - super_block.n;		//超级块中表示空闲块的指针
+		m = super_block.free[k];	//栈中的相应盘块的地址
 		p = super_block.free[49];   //栈中的最后一个盘块指向的地址
-		if (p == -1/*||memory[p].a==1*/)  //没有剩余盘块
+		if (p == -1)				//没有剩余盘块
 		{
 			printf("内存不足,不能够分配空间\n");
 			callback(i);//之前已分配的i个盘块回收；
@@ -201,10 +201,10 @@ void callback(int length)    {
 	int i, j, k, m, q = 0;
 	for (i = length - 1; i >= 0; i--)
 	{
-		k = physic[i];     //需要提供要回收的文件的地址
-		m = 49 - super_block.n;    //回收到栈中的哪个位置
-		if (super_block.n == 50)   //注意 当super_block.n==50时 m=-1;的值
-		{        //super_block.n==50的时候栈满了，要将这个栈中的所有地址信息写进下一个地址中
+		k = physic[i];				//需要提供要回收的文件的地址
+		m = 49 - super_block.n;		//回收到栈中的哪个位置
+		if (super_block.n == 50)	//注意 当super_block.n==50时 m=-1;的值
+		{							//super_block.n==50的时候栈满了，要将这个栈中的所有地址信息写进下一个地址中
 			for (j = 0; j<50; j++)
 			{
 				memory[k].free[j] = super_block.free[j];
@@ -213,7 +213,6 @@ void callback(int length)    {
 			for (u = 0; u<50; u++)
 			{
 				super_block.free[u] = -1;
-				//super_block.stack[u]=memory[k].free[u];
 			}
 			super_block.n = 0;
 			memory[k].n = 50;

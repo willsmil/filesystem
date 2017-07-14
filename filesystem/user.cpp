@@ -2,9 +2,9 @@
 #include "filesystem.h"
 using namespace std;
 
-user user_array[8];
-int login_userid = -1;
-int user_num = 0;
+user user_array[8];			//用户组
+int login_userid = -1;		//登陆用户ID
+int user_num = 0;			//用户总数
 
 /*注册*/
 void reg(){
@@ -17,7 +17,9 @@ void reg(){
 			cout << "用户名：";
 			cin >> tempusername;
 			int i;
-			for (i = 0; i<user_num; i++)//判断是否重名
+			
+			//判断是否重名
+			for (i = 0; i<user_num; i++)
 			{
 				if (user_array[i].username == tempusername) {
 					cout << "用户名已存在" << endl;
@@ -63,19 +65,15 @@ int login() {
 			else {
 				continue;
 			}
-			cout << "用户名或密码不正确" << endl;
-			return 0;
-		}
+		}	
+		cout << "用户名或密码不正确" << endl;
+		return 0;
 	}
 }
 
 /*退出*/
 void logout(){
-	printf(" \n                        Logouting");
-	for (int a = 0; a<4; a++)
-	{
-		Sleep(500);
-		printf(".");
-	}
+	cur_user = "";
+	login_userid = -1;
 	system("cls");
 }
