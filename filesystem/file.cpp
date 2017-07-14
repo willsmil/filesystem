@@ -176,7 +176,6 @@ int read(char filename[10]){
 						printf("\n  ÎÄ¼şÄÚÈİ£º");
 						for (add = 0; add < 100; add++) {
 							cout << memory[i_node[root[i].i_num].file_address[add]].content;
-							cout << add << endl;
 						}
 						//for (c = 0; memory[i_node[root[i].i_num].file_address[add]].content[c] != '\0'; c++)
 						//	printf("%c", memory[i_node[root[i].i_num].file_address[add]].content[c]);
