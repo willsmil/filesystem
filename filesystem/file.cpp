@@ -69,6 +69,7 @@ void del_file(char filename[])     {
 					memory[i_node[root[i].i_num].file_address[add]].content[c] = '\0';
 				}
 			}
+			temp_write = "";
 			k = root[i].i_num; 
 			i_node[k].file_UserId = -1;
 			i_node[k].limit = "";
@@ -207,6 +208,7 @@ void show_file_content() {
 	cout << "文件内容为：";
 	cout << temp_write << endl;
 }
+
 /*写入文件*/
 void write(char filename[10], string writec){
 	int i;

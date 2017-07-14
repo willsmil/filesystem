@@ -58,6 +58,9 @@ extern int file_array_head;			//文件表组头
 extern int physic[100];				//文件地址缓冲区
 extern int style;					//文件的类型
 extern char cur_dir[10];			//当前目录
+extern string temp_write;			//临时文件内容
+extern node temp_file;			//临时文件
+
 
 extern command cmd[17];
 extern block memory[20449];
@@ -75,7 +78,7 @@ extern void display_dir(char filename[]);		//进入指定的目录
 extern void close(char filename[10]);			//关闭文件
 extern void del_file(char filename[]);			//删除文件
 extern int open(char filename[10]);				//打开文件
-extern void copy(char filename[10]);				//复制文件
+extern void copy(char filename[10]);			//复制文件
 extern void paste(char filename[10]);			//粘贴文件
 extern int read(char filename[10]);				//读取文件内容
 extern void show_file_content();				//显示文件内容
