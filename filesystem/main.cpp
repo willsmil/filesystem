@@ -6,23 +6,26 @@ command cmd[17];  //命令
 
 /*帮助*/
 void help(){
-	printf("0.初始化-------------------------format\n");
-	printf("1.查看当前目录文件列表-----------dir\n");
-	printf("2.查看文件信息-------------------cat-----(cat + 文件名)  \n");
-	printf("3.查看系统信息-------------------ls    \n");
-	printf("4.创建目录-----------------------md------(md  + 目录名)  \n");
-	printf("5.创建文件-----------------------mkdir---(mkdir  + 文件名 + 文件长度 + 权限)\n");
-	printf("6.删除文件-----------------------del-----(del + 文件名) \n");
-	printf("7.打开文件-----------------------open----(open + 文件名) \n");
-	printf("8.关闭文件-----------------------close---(close + 文件名) \n");
-	printf("9.读取文件-----------------------read----(read + 文件名) \n");
-	printf("10.写入文件----------------------write---(write + 文件名 + 写入字符)\n");
-	printf("11.删除目录----------------------deldir--(deldir + 目录名)\n");
-	printf("12.进入当前目录下的指定目录------cd------(cd + 目录名)\n");
-	printf("13.返回上一级目录----------------cd..  \n");
-	printf("14.显示帮助命令------------------help  \n");
-	printf("15.退出文件系统------------------quit  \n");
-	printf("16.退出登录----------------------logout  \n");
+	printf("初始化------------------------format\n");
+	printf("查看当前目文件列表------------dir\n");
+	printf("查看文件信息------------------cat-----(cat + 文件名)  \n");
+	printf("查看系统信息------------------ls    \n");
+	printf("创建目录----------------------md------(md  + 目录名)  \n");
+	printf("创建文件----------------------mkdir---(mkdir  + 文件名 + 文件长度 + 权限)\n");
+	printf("删除文件----------------------delfile-(delfile + 文件名) \n");
+	printf("打开文件----------------------open----(open + 文件名) \n");
+	printf("关闭文件----------------------close---(close + 文件名) \n");
+	printf("读取文件----------------------read----(read + 文件名) \n");
+	printf("写入文件----------------------write---(write + 文件名 + 写入字符)\n");
+	printf("复制文件----------------------copy----(copy + 文件名）  \n");
+	printf("粘贴文件----------------------paste---(paste + 文件名)  \n");
+	printf("删除目录----------------------deldir--(deldir + 目录名)\n");
+	printf("进入当前目录下的指定目录------cd------(cd + 目录名)\n");
+	printf("返回上一级目录----------------cd..  \n");
+	printf("显示帮助命令------------------help  \n");
+	printf("退出文件系统------------------quit  \n");
+	printf("退出登录----------------------logout\n");
+	
 }
 
 /*主函数*/
@@ -39,7 +42,7 @@ void main(){
 	strcpy(cmd[3].com, "ls");
 	strcpy(cmd[4].com, "md");
 	strcpy(cmd[5].com, "mkdir");
-	strcpy(cmd[6].com, "del");
+	strcpy(cmd[6].com, "delfile");
 	strcpy(cmd[7].com, "deldir");
 	strcpy(cmd[8].com, "cd");
 	strcpy(cmd[9].com, "cd..");
@@ -50,6 +53,8 @@ void main(){
 	strcpy(cmd[14].com, "write");
 	strcpy(cmd[15].com, "logout");
 	strcpy(cmd[16].com, "close");
+	strcpy(cmd[17].com, "copy");
+	strcpy(cmd[18].com, "paste");
 	
 	//初始化
 	if ((fp = fopen("filesave", "rb")) == NULL)   //判断系统文件是否存在
@@ -104,13 +109,13 @@ void main(){
 		}
 
 		scanf("%s", com);       //输入命令并且查找命令的相关操作
-		for (i = 0; i<17; i++){
+		for (i = 0; i<19; i++){
 			if (strcmp(com, cmd[i].com) == 0){
 				p = i;
 				break;
 			}
 		}
-		if (i == 17){       //如果没有这个语句以后输入的命令都和第一次输入的效果一样
+		if (i == 19){       //如果没有这个语句以后输入的命令都和第一次输入的效果一样
 			p = -1;			//随便的一个值
 		}
 		switch (p){
@@ -230,6 +235,16 @@ void main(){
 			scanf("%s", tmp);
 			close(tmp);
 			break; 
+		}
+		case 17: {
+			scanf("%s", tmp);
+			copy(tmp);
+			break;
+		}
+		case 18: {
+			scanf("%s", tmp);
+			paste(tmp);
+			break;
 		}
 		default: {
 			cout << "无效指令" << endl;

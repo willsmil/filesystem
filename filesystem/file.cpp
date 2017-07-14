@@ -5,6 +5,8 @@ int file_array_head;	//文件表组头
 int physic[100];		//文件地址缓冲区
 string cur_user;		//当前用户
 int file_array[8] = { -1,-1,-1,-1,-1,-1,-1,-1 };  //打开文件表组
+node temp_file;
+string temp_write;
 
 /*创建文件*/
 void create_file(char filename[], int length, int userid, string limit){
@@ -177,6 +179,9 @@ int read(char filename[10]){
 						printf("\n  文件内容：");
 						for (add = 0; add < 100; add++) {
 							cout << memory[i_node[root[i].i_num].file_address[add]].content;
+							temp_write= memory[i_node[root[i].i_num].file_address[add]].content;
+							if (temp_write.length() != 0)
+								break;
 						}
 						printf("\n ");
 					}
@@ -225,7 +230,6 @@ void write(char filename[10], string writec){
 									for (write_length = 0; write_length < writec.length() && c<1000; c++, write_length++) {
 										memory[i_node[root[i].i_num].file_address[add]].content[c] = writec[write_length];
 									}
-									cout << writec << "已写入文件" << endl;
 									return;
 								}
 							}
@@ -236,7 +240,6 @@ void write(char filename[10], string writec){
 						}
 						return;
 					}
-
 					else
 					{
 						printf("你没有权限将内容写入文件！！\n");
@@ -289,4 +292,19 @@ void show_file(char filename[]){
 	}
 }
 
+/*复制文件*/
+void copy(char filename[10]) {
+	int i;
+	for ( i= 0; i < 640; i++) {
+		if (strcmp(root[i].file_name, filename) == 0 && i_node[root[i].i_num].file_style == 1)
+			temp_file = i_node[root[i].i_num];
+	}
+}
 
+/*粘贴*/
+void paste(char filename[10]) {
+	create_file(filename, temp_file.file_length, login_userid, temp_file.limit);
+	open(filename);
+	write(filename, temp_write);
+	close(filename);
+}

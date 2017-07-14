@@ -35,7 +35,7 @@ struct node{
 	int file_address[100];  //文件占用的物理块号。
 	string limit;//打开读写权限，0表示能打开读写，1表示能打开读，2表示能打开写，3表示只能打开
 	int file_UserId;
-} ;
+};
 
 //用户信息
 struct user {
@@ -75,6 +75,8 @@ extern void display_dir(char filename[]);		//进入指定的目录
 extern void close(char filename[10]);			//关闭文件
 extern void del_file(char filename[]);			//删除文件
 extern int open(char filename[10]);				//打开文件
+extern void copy(char filename[10]);				//复制文件
+extern void paste(char filename[10]);			//粘贴文件
 extern int read(char filename[10]);				//读取文件内容
 extern void show_file(char filename[]);			//显示文件信息
 extern void help();								//命令帮助
